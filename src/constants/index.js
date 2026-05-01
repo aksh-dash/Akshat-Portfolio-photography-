@@ -41,12 +41,12 @@ export const GALLERY_DATA = [
   { id: 1, title: "Captain Ritu Singh", category: "Portraits", height: "h-[400px]", img: "/Captain Ritu singh.jpg" },
   { id: 2, title: "Diwaliii", category: "Creatives", height: "h-[300px]", img: "/Diwali.jpg" },
   { id: 3, title: "Hummmsss", category: "nature", height: "h-[500px]", img: "/bee.jpg" },
-  { id: 4, title: "Crush??", category: "Events", height: "h-[350px]", img: "/porshe.jpg" },
+  { id: 4, title: "Crush??", category: "Events", height: "h-[350px]", img: "/DSC_0570 (2).jpg.jpeg" },
   { id: 5, title: "CFO Pooja Patel", category: "Portraits", height: "h-[450px]", img: "/Pooja patel.jpg" },
   { id: 6, title: "Structure", category: "Creatives", height: "h-[300px]", img: "/Buildings.jpg" },
   { id: 7, title: "Her eyes?", category: "nature", height: "h-[400px]", img: "/Moon.jpg" },
-  { id: 8, title: "Solo", category: "Events", height: "h-[500px]", img: "/dance.jpg" },
-  { id: 9, title: "Cravings", category: "Creatives", height: "h-[300px]", img: "/Diet coke.jpg" },
+  { id: 8, title: "Solo", category: "Events", height: "h-[500px]", img: "/Screenshot dance.png" },
+  { id: 9, title: "Cravings", category: "Creatives", height: "h-[300px]", img: "/Screenshot diet.png" },
 ];
 
 export const VIDEO_DATA = [
