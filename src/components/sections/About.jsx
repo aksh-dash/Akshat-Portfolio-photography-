@@ -38,7 +38,6 @@ const About = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-brand-text/70 text-lg leading-relaxed mb-12 font-light max-w-2xl"
             >
-              You know you’re gonna cook this time when sunrays bilkul perfect ho...
               Hii, I'm Akshat Dange. A ENTC undergraduate and a freelance photographer and content creator based in Pune, Maharashtra.
               I started clicking since 2019 and has collaborated with various brands and influencers across social media, conducted and attended various events in college and outside as well.
               I'm always keen to capture and curate moments that leave a lasting impression.
