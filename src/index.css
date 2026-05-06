@@ -31,7 +31,421 @@
   }
 }
 
-/* Grain overlay applied directly to pseudo-element for performance */
+/* ================================================
+   VIEWFINDER / CAMERA OVERLAY
+   ================================================ */
+
+/* Corner brackets — the classic viewfinder look */
+.viewfinder-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: rgba(201, 168, 76, 0.4);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.viewfinder-corner--tl {
+  top: 10%;
+  left: 8%;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.viewfinder-corner--tr {
+  top: 10%;
+  right: 8%;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.viewfinder-corner--bl {
+  bottom: 15%;
+  left: 8%;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.viewfinder-corner--br {
+  bottom: 15%;
+  right: 8%;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Center crosshair */
+.viewfinder-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0.25;
+}
+
+.viewfinder-crosshair::before,
+.viewfinder-crosshair::after {
+  content: "";
+  position: absolute;
+  background: rgba(201, 168, 76, 0.5);
+}
+
+.viewfinder-crosshair::before {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.viewfinder-crosshair::after {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+/* EXIF data strip */
+.exif-strip {
+  position: absolute;
+  bottom: 20%;
+  right: 8%;
+  display: flex;
+  gap: 16px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.exif-strip span {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(201, 168, 76, 0.35);
+  text-transform: uppercase;
+}
+
+/* REC indicator */
+.rec-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e53e3e;
+  margin-right: 6px;
+  animation: rec-blink 1.5s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes rec-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* ================================================
+   SHUTTER / APERTURE REVEAL ANIMATION
+   ================================================ */
+
+@keyframes shutter-open {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
+.shutter-reveal {
+  animation: shutter-open 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ================================================
+   LENS FLARE (Pure CSS)
+   ================================================ */
+
+.lens-flare {
+  position: absolute;
+  top: 15%;
+  right: 20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, rgba(201, 168, 76, 0.04) 30%, transparent 60%);
+  pointer-events: none;
+  z-index: 15;
+  filter: blur(40px);
+  animation: flare-pulse 6s ease-in-out infinite;
+}
+
+@keyframes flare-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* ================================================
+   FILM STRIP PATTERN
+   ================================================ */
+
+.film-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.film-strip::before,
+.film-strip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 4px,
+    rgba(201, 168, 76, 0.15) 4px,
+    rgba(201, 168, 76, 0.15) 12px,
+    transparent 12px,
+    transparent 16px
+  );
+  z-index: 5;
+}
+
+.film-strip::before {
+  left: 0;
+  border-right: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.film-strip::after {
+  right: 0;
+  border-left: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+/* Sprocket holes */
+.sprocket-hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  flex-shrink: 0;
+}
+
+/* ================================================
+   FOCUS BRACKET HOVER (for gallery cards)
+   ================================================ */
+
+.focus-bracket {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.focus-bracket::before,
+.focus-bracket::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(201, 168, 76, 0.7);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.focus-bracket::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.focus-bracket::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Additional corners via a wrapper pseudo */
+.focus-bracket-inner::before,
+.focus-bracket-inner::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(201, 168, 76, 0.7);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.focus-bracket-inner::before {
+  top: 0;
+  right: 0;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.focus-bracket-inner::after {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.group:hover .focus-bracket {
+  opacity: 1;
+}
+
+/* ================================================
+   LETTERBOX BARS (Cinema feel for videos)
+   ================================================ */
+
+.letterbox::before,
+.letterbox::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: rgba(8, 8, 8, 0.9);
+  z-index: 5;
+  transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.letterbox::before { top: 0; }
+.letterbox::after { bottom: 0; }
+
+.group:hover .letterbox::before,
+.group:hover .letterbox::after {
+  height: 12%;
+}
+
+/* ================================================
+   LIGHTROOM PANEL DECORATION
+   ================================================ */
+
+.lr-panel {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.lr-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.6);
+}
+
+/* Mini histogram decoration */
+.histogram {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 24px;
+  opacity: 0.4;
+}
+
+.histogram-bar {
+  width: 3px;
+  background: linear-gradient(to top, rgba(201, 168, 76, 0.6), rgba(201, 168, 76, 0.1));
+  border-radius: 1px 1px 0 0;
+  animation: histogram-dance 3s ease-in-out infinite;
+}
+
+@keyframes histogram-dance {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.6); }
+}
+
+/* ================================================
+   CAMERA LCD DISPLAY STYLE
+   ================================================ */
+
+.lcd-display {
+  font-family: "JetBrains Mono", monospace;
+  position: relative;
+}
+
+.lcd-display::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* ================================================
+   CROSSHAIR SECTION DIVIDER
+   ================================================ */
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201, 168, 76, 0.15), transparent);
+}
+
+/* ================================================
+   POLAROID FRAME EFFECT
+   ================================================ */
+
+.polaroid-frame {
+  padding: 12px 12px 48px 12px;
+  background: rgba(245, 240, 235, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
+  transform: rotate(-2deg);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.polaroid-frame:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* ================================================
+   APERTURE ICON ANIMATION
+   ================================================ */
+
+.aperture-icon {
+  animation: aperture-rotate 20s linear infinite;
+}
+
+@keyframes aperture-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ================================================
+   GRAIN OVERLAY (existing, preserved)
+   ================================================ */
+
 .grain-overlay::before {
   content: "";
   position: fixed;
@@ -58,7 +472,10 @@
   90% { transform: translate(-10%, 10%); }
 }
 
-/* Hide scrollbar but keep functionality */
+/* ================================================
+   SCROLLBAR (existing, preserved)
+   ================================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -73,7 +490,10 @@
   background: #C9A84C; 
 }
 
-/* Base custom cursor hidden by default, shown via JS */
+/* ================================================
+   CUSTOM CURSOR (existing, preserved)
+   ================================================ */
+
 body {
   cursor: none;
 }

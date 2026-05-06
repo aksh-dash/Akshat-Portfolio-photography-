@@ -4,6 +4,29 @@ import { Menu, X } from 'lucide-react';
 import { FiInstagram as Instagram } from 'react-icons/fi';
 import { NAV_LINKS, SOCIAL_LINKS } from '../../constants';
 
+/* Small aperture icon for the logo area */
+const ApertureMini = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={16}
+    height={16}
+    className="text-brand-gold/50"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <line x1="14.31" y1="8" x2="20.05" y2="17.94" />
+    <line x1="9.69" y1="8" x2="21.17" y2="8" />
+    <line x1="7.38" y1="12" x2="13.12" y2="2.06" />
+    <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
+    <line x1="14.31" y1="16" x2="2.83" y2="16" />
+    <line x1="16.62" y1="12" x2="10.88" y2="21.94" />
+  </svg>
+);
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,8 +55,12 @@ const Navbar = () => {
         }`}
       >
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <a href="#" className="font-display text-2xl text-brand-gold tracking-widest font-semibold" data-cursor="HOME">
-            CL
+          {/* Logo with aperture icon */}
+          <a href="#" className="flex items-center gap-2 group" data-cursor="HOME">
+            <ApertureMini />
+            <span className="font-display text-2xl text-brand-gold tracking-widest font-semibold">
+              CL
+            </span>
           </a>
 
           <nav className="hidden md:flex items-center gap-8">

@@ -1,7 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { EDITING_PORTRAIT, EDITING_LANDSCAPE } from '../../constants';
+
+/* Mini histogram bars for decoration */
+const MiniHistogram = () => {
+  const heights = [40, 65, 85, 70, 55, 90, 75, 60, 45, 80, 95, 70, 50, 65, 85, 60, 40, 75, 55, 45];
+  return (
+    <div className="histogram">
+      {heights.map((h, i) => (
+        <div
+          key={i}
+          className="histogram-bar"
+          style={{
+            height: `${h}%`,
+            animationDelay: `${i * 0.15}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const BeforeAfterSlider = ({ label1, label2, img1, img2 }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
@@ -40,36 +59,55 @@ const BeforeAfterSlider = ({ label1, label2, img1, img2 }) => {
   }, [isDragging]);
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative w-full aspect-[4/3] overflow-hidden rounded-md cursor-ew-resize select-none border border-white/5"
-      onMouseDown={(e) => { setIsDragging(true); handleMove(e.clientX); }}
-      onTouchStart={(e) => { setIsDragging(true); handleMove(e.touches[0].clientX); }}
-      data-cursor="DRAG"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#8a5d2e] to-[#2c1b0c] flex items-center justify-center">
-        {img2 && <img src={img2} alt="After" className="absolute inset-0 w-full h-full object-cover" />}
-        <span className="text-brand-text/50 font-display text-2xl absolute right-8 z-10">{label2}</span>
+    <div className="lr-panel">
+      {/* Lightroom-style panel header */}
+      <div className="lr-panel-header">
+        <div className="flex items-center gap-2">
+          <SlidersHorizontal size={12} />
+          <span>Develop</span>
+        </div>
+        <MiniHistogram />
       </div>
 
+      {/* The actual slider */}
       <div 
-        className="absolute inset-0 bg-gradient-to-br from-[#4a5568] to-[#1a202c] flex items-center justify-center overflow-hidden"
-        style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
+        ref={containerRef}
+        className="relative w-full aspect-[4/3] overflow-hidden cursor-ew-resize select-none"
+        onMouseDown={(e) => { setIsDragging(true); handleMove(e.clientX); }}
+        onTouchStart={(e) => { setIsDragging(true); handleMove(e.touches[0].clientX); }}
+        data-cursor="DRAG"
       >
-        {img1 && <img src={img1} alt="Before" className="absolute inset-0 w-full h-full object-cover" />}
-        <div className="absolute top-0 bottom-0 left-0 flex items-center justify-center z-10" style={{ width: containerRef.current ? containerRef.current.offsetWidth : '100vw' }}>
-          <span className="text-brand-text/50 font-display text-2xl absolute left-8">{label1}</span>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#8a5d2e] to-[#2c1b0c] flex items-center justify-center">
+          {img2 && <img src={img2} alt="After" className="absolute inset-0 w-full h-full object-cover" />}
+          <span className="text-brand-text/50 font-display text-2xl absolute right-8 z-10">{label2}</span>
+        </div>
+
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-[#4a5568] to-[#1a202c] flex items-center justify-center overflow-hidden"
+          style={{ clipPath: `polygon(0 0, ${sliderPosition}% 0, ${sliderPosition}% 100%, 0 100%)` }}
+        >
+          {img1 && <img src={img1} alt="Before" className="absolute inset-0 w-full h-full object-cover" />}
+          <div className="absolute top-0 bottom-0 left-0 flex items-center justify-center z-10" style={{ width: containerRef.current ? containerRef.current.offsetWidth : '100vw' }}>
+            <span className="text-brand-text/50 font-display text-2xl absolute left-8">{label1}</span>
+          </div>
+        </div>
+
+        <div 
+          className="absolute top-0 bottom-0 w-0.5 bg-brand-gold z-10"
+          style={{ left: `${sliderPosition}%` }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-brand-dark border-2 border-brand-gold rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(201,168,76,0.5)]">
+            <ChevronLeft size={12} className="text-brand-gold absolute left-1" />
+            <ChevronRight size={12} className="text-brand-gold absolute right-1" />
+          </div>
         </div>
       </div>
 
-      <div 
-        className="absolute top-0 bottom-0 w-0.5 bg-brand-gold z-10"
-        style={{ left: `${sliderPosition}%` }}
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-brand-dark border-2 border-brand-gold rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(201,168,76,0.5)]">
-          <ChevronLeft size={12} className="text-brand-gold absolute left-1" />
-          <ChevronRight size={12} className="text-brand-gold absolute right-1" />
-        </div>
+      {/* Slider percentage indicator */}
+      <div className="flex items-center justify-between px-4 py-2 border-t border-white/5">
+        <span className="font-mono text-[9px] tracking-widest text-brand-text/20 uppercase">{label1}</span>
+        <span className="font-mono text-[9px] tracking-widest text-brand-gold/40">{Math.round(sliderPosition)}%</span>
+        <span className="font-mono text-[9px] tracking-widest text-brand-text/20 uppercase">{label2}</span>
       </div>
     </div>
   );
@@ -81,6 +119,16 @@ const Editing = () => {
       <div className="container mx-auto px-6">
         
         <div className="flex flex-col items-center mb-16">
+          {/* Section icon */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="mb-4"
+          >
+            <SlidersHorizontal size={20} className="text-brand-gold/40" />
+          </motion.div>
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,10 +142,25 @@ const Editing = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-brand-text/50 text-center max-w-2xl"
+            className="text-brand-text/50 text-center max-w-2xl mb-2"
           >
             Color grading and dodging & burning breathe life into a flat RAW file. Drag the sliders below to see the transformation.
           </motion.p>
+
+          {/* Software badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="flex items-center gap-4 mt-2"
+          >
+            {['Lightroom', 'Photoshop', 'DaVinci'].map((sw) => (
+              <span key={sw} className="font-mono text-[9px] tracking-[0.15em] uppercase text-brand-text/20">
+                {sw}
+              </span>
+            ))}
+          </motion.div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
@@ -121,15 +184,21 @@ const Editing = () => {
           </motion.div>
         </div>
 
+        {/* Editing technique pills — styled as adjustment panel items */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="flex flex-wrap justify-center gap-4"
         >
-          {['Film emulation', 'Dodging & Burning', 'Colour harmony'].map((pill, i) => (
-            <span key={i} className="px-6 py-2 border border-brand-gold/30 text-brand-gold rounded-full text-sm tracking-widest uppercase">
-              {pill}
+          {[
+            { name: 'Film emulation', icon: '◉' },
+            { name: 'Dodging & Burning', icon: '◐' },
+            { name: 'Colour harmony', icon: '◑' },
+          ].map((pill, i) => (
+            <span key={i} className="flex items-center gap-2 px-6 py-2 border border-brand-gold/30 text-brand-gold rounded-full text-sm tracking-widest uppercase">
+              <span className="text-[10px] opacity-60">{pill.icon}</span>
+              {pill.name}
             </span>
           ))}
         </motion.div>

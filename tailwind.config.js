@@ -19,6 +19,7 @@ export default {
       fontFamily: {
         display: ['"Playfair Display"', '"Cormorant Garamond"', 'serif'],
         sans: ['"Inter"', '"DM Sans"', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
       },
       letterSpacing: {
         widest: '0.2em',
